@@ -41,7 +41,7 @@ class StageToRedshiftOperator(BaseOperator):
 
         self.log.info(f"Loading data from {self.s3_bucket}/{self.s3_key} to Redshift {self.destination_table} table")
         
-        copy_query = f"""
+        copy_query = """
         COPY {self.destination_table}
         FROM 's3://{self.s3_bucket}/{self.s3_key}'
         ACCESS_KEY_ID '{credentials.access_key}'
