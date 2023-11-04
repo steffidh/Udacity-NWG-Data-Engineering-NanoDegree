@@ -71,7 +71,7 @@ CREATE TABLE public."time" (
 	"year" int4,
 	weekday varchar(256),
 	CONSTRAINT time_pkey PRIMARY KEY (start_time)
-);
+) ;
 
 CREATE TABLE public.users (
 	userid int4 NOT NULL,
@@ -81,8 +81,3 @@ CREATE TABLE public.users (
 	"level" varchar(256),
 	CONSTRAINT users_pkey PRIMARY KEY (userid)
 );
-
-
-
-
-

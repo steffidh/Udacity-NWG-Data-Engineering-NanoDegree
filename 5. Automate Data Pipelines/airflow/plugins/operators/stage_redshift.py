@@ -33,24 +33,26 @@ class StageToRedshiftOperator(BaseOperator):
         self.aws_region = aws_region
 
     def execute(self, context):
-        self.log.info('StageToRedshiftOperator - Loading Data from S3 to Redshift')
-        
+        # self.log.info('StageToRedshiftOperator not implemented yet')
         aws_hook = AwsHook(self.aws_credentials_id)
-        credentials = aws_hook.get_credentials()
+        cred = aws_hook.get_credentials()
         redshift = PostgresHook(postgres_conn_id=self.redshift_conn_id)
 
-        self.log.info(f"Loading data from {self.s3_bucket}/{self.s3_key} to Redshift {self.destination_table} table")
+        self.log.info("Copying data from {s3_bucket}/{s3_key} to Redshift {destination_table} table".format(s3_bucket=self.s3_bucket,s3_key=self.s3_key,destination_table=self.destination_table))
         
-        copy_query = """
-        COPY {self.destination_table}
-        FROM 's3://{self.s3_bucket}/{self.s3_key}'
-        ACCESS_KEY_ID '{credentials.access_key}'
-        SECRET_ACCESS_KEY '{credentials.secret_key}'
-        JSON '{self.json_paths}'
-        COMPUPDATE OFF;
-        """
+        query = """
+        COPY {destination_table}
+        FROM '{s3_path}'
+        ACCESS_KEY_ID '{access_key}'
+        SECRET_ACCESS_KEY '{secret_key}'
+        JSON '{json_paths}'
+		COMPUPDATE OFF;
+    """
+        s3_path = "s3://{s3_bucket}/{s3_key}".format(s3_bucket=self.s3_bucket,s3_key=self.s3_key)
 
-
-
-
+        sql_query= query.format(destination_table=self.destination_table, s3_path=s3_path, access_key=cred.access_key,secret_key=cred.secret_key, json_paths=self.json_paths)
+        
+        # Run query
+        redshift.run(sql_query)
+        self.log.info("StagetoRedshift Operator ran successfully")
 

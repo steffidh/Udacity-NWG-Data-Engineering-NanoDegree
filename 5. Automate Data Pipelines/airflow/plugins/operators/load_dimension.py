@@ -11,7 +11,7 @@ class LoadDimensionOperator(BaseOperator):
                  # Define your operators params (with defaults) here
                  # Example:
                  # conn_id = your-connection-name
-                 redshift_conn_id = "",
+                 redshift_conn_id = "redshift",
                  target_db = "",
                  destination_table = "",
                  sql = "",
@@ -29,12 +29,13 @@ class LoadDimensionOperator(BaseOperator):
         self.truncate = truncate
 
     def execute(self, context):
-        self.log.info('LoadDimensionOperator - Loading Dimension Tables')
+        ##self.log.info('LoadDimensionOperator not implemented yet')
         redshift = PostgresHook(postgres_conn_id=self.redshift_conn_id)
         if self.truncate:
             redshift.run(f"TRUNCATE TABLE {self.destination_table}")
-        sql = f"\nINSERT INTO {self.target_db}.{self.destination_table} ({self.sql})"
-        self.log.info(f"Loading data: {self.target_db}.{self.destination_table} table")
-        self.log.info(f"Running SQL: {sql}")
+            
+        sql = "\nINSERT INTO {target_db}.{destination_table} ({sql})".format(target_db=self.target_db,destination_table=self.destination_table,sql=self.sql)
+        self.log.info("SQL is running: {sql}".format(sql=sql))
         redshift.run(sql)
-        self.log.info("LoadDimensionOperator: Completed Successfully")
+        self.log.info("LoadDimOperator ran Successfully")
+        

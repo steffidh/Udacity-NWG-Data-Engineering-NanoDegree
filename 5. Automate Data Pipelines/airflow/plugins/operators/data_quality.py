@@ -11,7 +11,6 @@ class DataQualityOperator(BaseOperator):
                  # Define your operators params (with defaults) here
                  # Example:
                  # conn_id = your-connection-name
-                 
                  redshift_conn_id="",
                  dq_checks=[],
                  expected_result=None,
@@ -26,28 +25,28 @@ class DataQualityOperator(BaseOperator):
         self.expected_result=expected_result
 
     def execute(self, context):
-        self.log.info('DataQualityOperator - Starting DQ Check')
+        # self.log.info('DataQualityOperator not implemented yet')
         redshift_hook = PostgresHook(self.redshift_conn_id)
         
         if len(self.dq_checks)<=0:
-            self.log.info('No DQ Passed')
+            self.log.info('Data Quality not passed')
             return
         
         failed_queries=[]
         
         for sql in self.dq_checks:
             try:
-                self.log.info(f"Running query: {sql}")
+                self.log.info(f"Executing Query: {sql}")
                 records = redshift_hook.get_records(sql)[0][0]
             except Exception as e:
-                self.log.info(f"Query failed with exception: {e}")
+                self.log.info(f"Execution failed with exception: {e}")
 
             if self.expected_result != records:
                 failed_queries.append(sql)
 
         if len(failed_queries) > 0:
-            self.log.info('Tests failed')
+            self.log.info('Results not passed')
             self.log.info(failed_queries)
-            raise ValueError('Data quality check failed')
+            raise ValueError('Data quality checks failed')
         else:
-            self.log.info("All data quality checks passed")
+            self.log.info("All data quality tests passed")
