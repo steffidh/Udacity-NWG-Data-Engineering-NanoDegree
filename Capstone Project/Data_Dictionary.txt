@@ -1,0 +1,71 @@
+fact_immigration
+-------------------------------------------------------
+Primary Key(s) = id 
+    |- id (bigint): Unique Identifier for each Immigrant
+    |- citizen (varchar): Country of Citizenship
+    |- resident (varchar): Country of Residence
+    |- us_state (varchar): US State
+    |- modes (varchar): Mode of Transportation (Air, Sea, Land, Not Reported)
+    |- visa (varchar): Visa Category (Pleasure, Business, Student)
+    |- arrival_date (date): Date of Arrival
+    |- departure_date (date): Date of Departure
+    |- age (int): Age of Immigrant as of 2016
+    |- gender (varchar): gender of Immigrant 
+    |- visa_type (varchar): Visa Type (B1, B2, CP, E2, F1, F2 etc.)
+
+    
+-------------------------------------------------------
+dim_temperature
+-------------------------------------------------------
+Primary Key(s) = city, country
+    |- city (varchar)
+    |- country (varchar)
+    |- all_time_avg_temperature (float): Avg of all the temperature given for that city and country
+
+
+-------------------------------------------------------
+dim_airport_codes
+-------------------------------------------------------
+Primary Key(s) = id
+    |- id (varchar): Unique identifier for each row
+    |- type (varchar): Type of airport (Small, Medium, or Large)
+    |- name (varchar): Name of the Airport
+    |- country (varchar): Country Code
+    |- region (varchar): Region idenfied as Country Code-Region Code
+    
+-------------------------------------------------------
+dim_demographics
+-------------------------------------------------------
+Primary Key(s) = city, state, race
+    |- city (varchar)
+    |- state (varchar)
+    |- median_age (float): Median Population Age
+    |- male_population (bigint): Male population of the city
+    |- female_population (bigint): Female population of the city
+    |- total_population (bigint): Total population of the city
+    |- foreign_born (bigint): No. of people born outside the city
+    |- avg_household_size (float): Average Household size of the city
+    |- state_code (varchar)
+    |- race (varchar): Race Category for the people (Black or African-American, Hispanic or Latino, White, Asian, American Indian and Alaska Native)
+    
+    
+-------------------------------------------------------
+dim_time
+-------------------------------------------------------
+Primary Key(s) = date
+    |- date (date): Unique dates containing all arrival and departure dates
+	|- year (int): Year extracted from the date
+    |- month (varchar): Month extracted from the date
+    |- day (int): Day of the month extracted from the date
+    |- week (bigint): Week extracted from the date
+    |- quarter (bigint): Quarter extracted from the date
+   
+   
+-------------------------------------------------------
+dim_iso_code
+-------------------------------------------------------
+Primary Key = Country
+    |- country (varchar): Unique Country names
+    |- iso_code (varchar): Two Character ISO Country Code
+
+   
